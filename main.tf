@@ -5,7 +5,9 @@ resource "aws_instance" "instance" {
 
   tags = {
     Name = var.name
+    Monitor = var.value
   }
+
 }
 resource "aws_route53_record" "record" {
 
