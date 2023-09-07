@@ -18,6 +18,15 @@ resource "aws_route53_record" "record" {
   records = [aws_instance.instance.private_ip]
 
 }
+resource "aws_security_group_rule" "nginx_exporter" {
+  count             = var.name == "frontend" ? 1 : 0
+  type              = "ingress"
+  from_port         = 9113
+  to_port           = 9113
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "sg-09f2ca421f162b6b5"
+}
 resource "null_resource" "ansible" {
   depends_on = [
     aws_route53_record.record
