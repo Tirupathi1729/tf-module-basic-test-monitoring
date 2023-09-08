@@ -21,7 +21,7 @@ resource "aws_route53_record" "record" {
 
 }
 resource "aws_security_group" "prometheus1" {
-  name        = "prometheus"
+  name        = "prometheus1"
   description = "prometheus_all"
   vpc_id      = "vpc-095dcad0c8ac8c419"
 
@@ -51,7 +51,7 @@ resource "aws_security_group" "prometheus1" {
   }
 
   tags = {
-    Name = "prometheus"
+    Name = "prometheus1"
   }
 }
 
