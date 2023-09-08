@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "nginx_exporter" {
   to_port           = 9113
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = var.security_groups.id
+  security_group_id = "sg-06f905eeb15c22808"
 }
 resource "null_resource" "ansible" {
   depends_on = [
