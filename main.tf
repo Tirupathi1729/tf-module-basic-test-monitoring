@@ -1,9 +1,9 @@
 resource "aws_instance" "instance" {
   ami                       = data.aws_ami.ami.id
   instance_type             = var.instance_type
-  #vpc_security_group_ids    = [aws_security_group.prometheus1.id]
-#  security_groups           = [aws_security_group.prometheus1.name]
-  vpc_security_group_ids    = var.security_groups
+  #vpc_security_group_ids   = [aws_security_group.prometheus1.id]
+#  security_groups          = [aws_security_group.prometheus1.name]
+  vpc_security_group_ids    = [var.security_groups]
   tags = {
     Name = var.name
     Monitor = var.value
