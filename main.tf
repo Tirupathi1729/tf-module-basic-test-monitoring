@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "nginx_exporter" {
   to_port           = 9113
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = [aws_security_group.prometheus1.name]
+  security_group_id = aws_security_group.prometheus1.id
 }
 resource "null_resource" "ansible" {
   depends_on = [
