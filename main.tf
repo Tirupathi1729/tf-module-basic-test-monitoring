@@ -1,10 +1,9 @@
 resource "aws_instance" "instance" {
   ami                       = data.aws_ami.ami.id
   instance_type             = var.instance_type
-  vpc_security_group_ids    = [aws_security_group.prometheus1.id]
+  #vpc_security_group_ids    = [aws_security_group.prometheus1.id]
 #  security_groups           = [aws_security_group.prometheus1.name]
-  #vpc_security_group_ids    = aws_security_group.prometheus.id
-
+  vpc_security_group_ids    = var.security_groups
   tags = {
     Name = var.name
     Monitor = var.value
@@ -20,40 +19,40 @@ resource "aws_route53_record" "record" {
   records = [aws_instance.instance.private_ip]
 
 }
-resource "aws_security_group" "prometheus1" {
-  name        = "prometheus1"
-  description = "prometheus_all"
-  vpc_id      = "vpc-095dcad0c8ac8c419"
-
-  ingress {
-    description      = "All traffic"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  ingress {
-    description      = "node_exporter"
-    from_port        = 9110
-    to_port          = 9110
-    protocol         = "tcp"
-    cidr_blocks      = var.monitoring_ingress_cidr
-
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "prometheus1"
-  }
-}
+#resource "aws_security_group" "prometheus1" {
+#  name        = "prometheus1"
+#  description = "prometheus_all"
+#  vpc_id      = "vpc-095dcad0c8ac8c419"
+#
+#  ingress {
+#    description      = "All traffic"
+#    from_port        = 0
+#    to_port          = 0
+#    protocol         = "-1"
+#    cidr_blocks      = ["0.0.0.0/0"]
+#    ipv6_cidr_blocks = ["::/0"]
+#  }
+#  ingress {
+#    description      = "node_exporter"
+#    from_port        = 9110
+#    to_port          = 9110
+#    protocol         = "tcp"
+#    cidr_blocks      = var.monitoring_ingress_cidr
+#
+#  }
+#
+#  egress {
+#    from_port        = 0
+#    to_port          = 0
+#    protocol         = "-1"
+#    cidr_blocks      = ["0.0.0.0/0"]
+#    ipv6_cidr_blocks = ["::/0"]
+#  }
+#
+#  tags = {
+#    Name = "prometheus1"
+#  }
+#}
 
 resource "aws_security_group_rule" "nginx_exporter" {
   count             = var.component == "frontend" ? 1 : 0
@@ -62,7 +61,7 @@ resource "aws_security_group_rule" "nginx_exporter" {
   to_port           = 9113
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.prometheus1.id
+  security_group_id = var.security_groups
 }
 resource "null_resource" "ansible" {
   depends_on = [
