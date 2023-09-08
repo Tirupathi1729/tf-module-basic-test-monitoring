@@ -7,6 +7,7 @@ resource "aws_instance" "instance" {
   tags = {
     Name = var.name
     Monitor = var.value
+    Monitor_Nginx= var.tags
   }
 
 }
