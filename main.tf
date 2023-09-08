@@ -5,9 +5,9 @@ resource "aws_instance" "instance" {
 #  security_groups          = [aws_security_group.prometheus1.name]
   vpc_security_group_ids    = var.security_groups
   tags = {
-    Name = var.name
+    Name    = var.name
     Monitor = var.value
-    Monitor_Nginx= var.tags
+    Monitor_Nginx = var.name == "frontend" ? "yes" : "no"
   }
 
 }
