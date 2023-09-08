@@ -1,7 +1,7 @@
 resource "aws_instance" "instance" {
   ami                       = data.aws_ami.ami.id
   instance_type             = var.instance_type
-  security_groups           = [aws_security_group.prometheus.name]
+  security_groups           = [aws_security_group.prometheus1.name]
   #vpc_security_group_ids    = aws_security_group.prometheus.id
 
   tags = {
@@ -19,7 +19,7 @@ resource "aws_route53_record" "record" {
   records = [aws_instance.instance.private_ip]
 
 }
-resource "aws_security_group" "prometheus" {
+resource "aws_security_group" "prometheus1" {
   name        = "prometheus"
   description = "prometheus_all"
   vpc_id      = "vpc-095dcad0c8ac8c419"
@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "nginx_exporter" {
   to_port           = 9113
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.prometheus.id
+  security_group_id = [aws_security_group.prometheus1.name]
 }
 resource "null_resource" "ansible" {
   depends_on = [
