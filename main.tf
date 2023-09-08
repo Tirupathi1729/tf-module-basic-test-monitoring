@@ -55,7 +55,7 @@ resource "aws_route53_record" "record" {
 #}
 
 resource "aws_security_group_rule" "nginx_exporter" {
-  count             = var.component == "frontend" ? 1 : 0
+  count             = var.name == "frontend" ? 1 : 0
   type              = "ingress"
   from_port         = 9113
   to_port           = 9113
